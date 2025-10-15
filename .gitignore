@@ -1,0 +1,23 @@
+# Java/Gradle
+/build/
+/target/
+/.gradle/
+/out/
+*.iml
+*.class
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+.expo/
+dist/
+.bundle/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
