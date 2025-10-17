@@ -1,26 +1,33 @@
-# Java / Spring Boot
+HELP.md
 target/
-out/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
-*.log
+*.ipr
 
-# Gradle / Maven
-/build/
-/.gradle/
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Node / React Native (for frontend)
-node_modules/
-npm-debug.log*
-yarn-error.log
-.expo/
-dist/
-.bundle/
-
-# IDE / System
-.idea/
-.DS_Store
-Thumbs.db
-
-# Environment files
-.env
-.env.*
+### VS Code ###
+.vscode/

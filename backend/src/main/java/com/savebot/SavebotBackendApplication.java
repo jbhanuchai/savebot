@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SavebotBackendApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SavebotBackendApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(SavebotBackendApplication.class, args);
+	}
 
 }

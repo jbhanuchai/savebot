@@ -24,6 +24,6 @@ public class UserController {
                 .getAuthentication().getPrincipal();
 
         User u = repo.findByEmail(email).orElseThrow();
-        return ResponseEntity.ok(new UserProfileResponse(u.getId(), u.getFullName(), u.getEmail()));
+        return ResponseEntity.ok(new UserProfileResponse(u.getId(), u.getName(), u.getEmail()));
     }
 }

@@ -1,4 +1,4 @@
-package com.savebot.controller;
+package com.savebot.security;
 
 import com.savebot.controller.dto.AuthResponse;
 import com.savebot.controller.dto.LoginRequest;

@@ -8,41 +8,41 @@ import com.savebot.security.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class AuthService {
 
     private final UserRepository repo;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder;
     private final JwtUtil jwt;
 
-    public AuthService(UserRepository repo, PasswordEncoder passwordEncoder, JwtUtil jwt) {
+    public AuthService(UserRepository repo, PasswordEncoder encoder, JwtUtil jwt) {
         this.repo = repo;
-        this.passwordEncoder = passwordEncoder;
+        this.encoder = encoder;
         this.jwt = jwt;
     }
 
-    // register new user (throws if email exists)
     public void register(SignupRequest req) {
-        if (repo.existsByEmail(req.email)) {
-            throw new IllegalArgumentException("Email already in use");
+        if (repo.findByEmail(req.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already registered");
         }
+
         User u = new User();
-        u.setFullName(req.fullName);
-        u.setEmail(req.email);
-        u.setPasswordHash(passwordEncoder.encode(req.password)); // BCrypt hash
-        u.getRoles().add("USER");
+        u.setEmail(req.getEmail());
+        u.setName(req.getName());
+        u.setPasswordHash(encoder.encode(req.getPassword())); // store hash
+        u.setRoles(Set.of("USER"));
         repo.save(u);
     }
 
-    // authenticate and return JWT
     public String login(LoginRequest req) {
-        var u = repo.findByEmail(req.email)
+        User u = repo.findByEmail(req.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
-
-        if (!passwordEncoder.matches(req.password, u.getPasswordHash())) {
+        if (!encoder.matches(req.getPassword(), u.getPasswordHash())) {
             throw new IllegalArgumentException("Invalid credentials");
         }
+        // include roles if you want; JwtUtil supports both overloads
         return jwt.generateToken(u.getEmail(), u.getRoles());
     }
-
 }
