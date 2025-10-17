@@ -15,41 +15,42 @@ AI-powered bill negotiation platform that automates bill tracking, privacy manag
 ## Backend Setup
 
 ### 1. Clone the repository
-\`\`\`bash
+```bash
 git clone https://github.com/jbhanuchai/savebot.git
 cd savebot/backend
-\`\`\`
+```
 
 ### 2. Configure environment variables
 Instead of storing secrets in plain text, create an `.env` file in the backend directory:
-\`\`\`bash
+
+```bash
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/savebot
 SPRING_DATASOURCE_USERNAME=<your-db-username>
 SPRING_DATASOURCE_PASSWORD=<your-db-password>
 JWT_SECRET=<your-secret-key>
-\`\`\`
+```
 
 Then, reference these in your `application.properties`:
-\`\`\`properties
-spring.datasource.url=\${SPRING_DATASOURCE_URL}
-spring.datasource.username=\${SPRING_DATASOURCE_USERNAME}
-spring.datasource.password=\${SPRING_DATASOURCE_PASSWORD}
-jwt.secret=\${JWT_SECRET}
-\`\`\`
+```properties
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+jwt.secret=${JWT_SECRET}
+```
 
 *(The `.env` file should be included in your `.gitignore` — never commit it to GitHub.)*
 
 ### 3. Run the backend
-\`\`\`bash
+```bash
 mvn clean package -DskipTests
 mvn spring-boot:run
-\`\`\`
+```
 
 When successful, you should see:
-\`\`\`
+```
 Tomcat started on port 8080
 Started SavebotBackendApplication in X seconds
-\`\`\`
+```
 
 ---
 
@@ -57,30 +58,29 @@ Started SavebotBackendApplication in X seconds
 
 | Endpoint | Method | Description |
 |-----------|---------|-------------|
-| `/ping` | `GET` | Health check (`pong`) |
-| `/auth/signup` | `POST` | Register a new user |
-| `/auth/login` | `POST` | Authenticate user and return JWT token |
-| `/user/profile` | `GET` | Get logged-in user profile (requires Bearer token) |
+| `/ping` | GET | Health check (`pong`) |
+| `/auth/signup` | POST | Register a new user |
+| `/auth/login` | POST | Authenticate user and return JWT token |
+| `/user/profile` | GET | Get logged-in user profile (requires Bearer token) |
 
 ---
 
 ## Example Usage
 
-\`\`\`bash
-# Signup
-curl -X POST http://localhost:8080/auth/signup \
-  -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"Passw0rd!","name":"Alice"}'
+### Signup
+```bash
+curl -X POST http://localhost:8080/auth/signup   -H "Content-Type: application/json"   -d '{"email":"user@example.com","password":"Passw0rd!","name":"Alice"}'
+```
 
-# Login
-curl -X POST http://localhost:8080/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"user@example.com","password":"Passw0rd!"}'
+### Login
+```bash
+curl -X POST http://localhost:8080/auth/login   -H "Content-Type: application/json"   -d '{"email":"user@example.com","password":"Passw0rd!"}'
+```
 
-# Get Profile
-curl -H "Authorization: Bearer <JWT_TOKEN>" \
-  http://localhost:8080/user/profile
-\`\`\`
+### Get Profile
+```bash
+curl -H "Authorization: Bearer <JWT_TOKEN>"   http://localhost:8080/user/profile
+```
 
 ---
 
