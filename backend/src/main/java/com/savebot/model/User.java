@@ -1,6 +1,7 @@
 package com.savebot.model;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +27,22 @@ public class User {
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
-    // --- getters / setters ---
+    // === Phase 2 fields ===
+    @Column(nullable = false)
+    private boolean consentAutoNegotiate = false;
+
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    // === Lifecycle hook to set creation time ===
+    @PrePersist
+    public void onCreate() {
+        if (this.createdAt == null) {
+            this.createdAt = Instant.now();
+        }
+    }
+
+    // --- Getters / Setters ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -41,4 +57,10 @@ public class User {
 
     public Set<String> getRoles() { return roles; }
     public void setRoles(Set<String> roles) { this.roles = roles; }
+
+    public boolean isConsentAutoNegotiate() { return consentAutoNegotiate; }
+    public void setConsentAutoNegotiate(boolean consentAutoNegotiate) { this.consentAutoNegotiate = consentAutoNegotiate; }
+
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }
