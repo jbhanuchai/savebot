@@ -1,0 +1,26 @@
+# Java / Spring Boot
+target/
+out/
+*.iml
+*.log
+
+# Gradle / Maven
+/build/
+/.gradle/
+
+# Node / React Native (for frontend)
+node_modules/
+npm-debug.log*
+yarn-error.log
+.expo/
+dist/
+.bundle/
+
+# IDE / System
+.idea/
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
