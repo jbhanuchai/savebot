@@ -5,8 +5,11 @@ import com.savebot.controller.dto.SignupRequest;
 import com.savebot.model.User;
 import com.savebot.repository.UserRepository;
 import com.savebot.security.JwtUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -23,9 +26,11 @@ public class AuthService {
         this.jwt = jwt;
     }
 
+    // If your controller calls this "signup", you can keep the name `register` or rename it.
     public void register(SignupRequest req) {
         if (repo.findByEmail(req.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already registered");
+            // 409 Conflict for duplicate email
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already registered");
         }
 
         User u = new User();
@@ -37,12 +42,14 @@ public class AuthService {
     }
 
     public String login(LoginRequest req) {
+        // 401 Unauthorized for bad credentials
         User u = repo.findByEmail(req.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+                .orElseThrow(() -> new BadCredentialsException("Invalid credentials"));
+
         if (!encoder.matches(req.getPassword(), u.getPasswordHash())) {
-            throw new IllegalArgumentException("Invalid credentials");
+            throw new BadCredentialsException("Invalid credentials");
         }
-        // include roles if you want; JwtUtil supports both overloads
+
         return jwt.generateToken(u.getEmail(), u.getRoles());
     }
 }
