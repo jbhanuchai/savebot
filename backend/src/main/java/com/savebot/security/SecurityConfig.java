@@ -1,4 +1,3 @@
-// SecurityConfig.java
 package com.savebot.security;
 
 import org.springframework.context.annotation.Bean;
@@ -32,7 +31,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/ping").permitAll()
+                        // ✅ Added "/error" to the permit list (important for 413 and Spring error handling)
+                        .requestMatchers("/auth/**", "/ping", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
@@ -52,9 +52,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception {

@@ -7,7 +7,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
@@ -58,5 +60,11 @@ public class GlobalExceptionHandler {
         String msg = ex.getReason() != null ? ex.getReason() : status.getReasonPhrase();
         return ResponseEntity.status(status)
                 .body(Map.of("error", msg));
+    }
+
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
+    public Map<String, String> handleTooLarge(MaxUploadSizeExceededException ex) {
+        return Map.of("error", "File too large");
     }
 }
